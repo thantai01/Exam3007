@@ -1,5 +1,6 @@
 package config;
 
+import formatter.CategoryFormatter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +27,10 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import service.category.CategoryServiceImpl;
+import service.category.ICategoryService;
+import service.product.IProductService;
+import service.product.ProductServiceImpl;
 
 
 import javax.persistence.EntityManager;
@@ -127,7 +132,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-//        registry.addFormatter(new MotorTypeFormatter(applicationContext.getBean(MotorTypeServiceImpl.class)));
+        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryServiceImpl.class)));
 
     }
 
@@ -138,5 +143,8 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
         resolver.setMaxUploadSizePerFile(52428800);
         return resolver;
     }
-
+    @Bean
+    public ICategoryService categoryService() {return new CategoryServiceImpl();}
+    @Bean
+    public IProductService productService() {return new ProductServiceImpl();}
 }
